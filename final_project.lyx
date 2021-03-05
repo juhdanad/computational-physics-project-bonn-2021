@@ -1,0 +1,222 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass revtex4-1
+\begin_preamble
+
+\end_preamble
+\options reprint,amsmath,amssymb,aps,
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Wolff Cluster Algorithm
+\end_layout
+
+\begin_layout Thanks
+A final project for the Computational Physics lecture
+\end_layout
+
+\begin_layout Author
+Dániel Juhász
+\end_layout
+
+\begin_layout Author
+Maximilian Mucha
+\end_layout
+
+\begin_layout Date
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+today
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+The Ising model is a well known model of ferromagnetic materials and phase
+ transitions.
+ Although exact results are known for specific cases, simulating these systems
+ is a highly researched topic.
+ When the system is near a phase transition, successive measurements tend
+ to be highly correlated, therefore extracting statistically significant
+ data becomes difficult.
+ In this final report we demonstrate one of the most efficient algorithms
+ that can deal with this problem: the Wolff cluster algorithm.
+ After testing the correctness of our implementation, we calculate the dynamical
+ exponent, and compare the result with the Metropolis-Hastings method.
+ We also calculate the critical temperature for the 2D and 3D Ising models.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The introduction.
+\end_layout
+
+\begin_layout Section
+Theoretical Basis
+\end_layout
+
+\begin_layout Standard
+The theoretical basis.
+\end_layout
+
+\begin_layout Section
+Methods
+\end_layout
+
+\begin_layout Standard
+The methods.
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Standard
+Th results.
+\end_layout
+
+\begin_layout Section
+Discussion
+\end_layout
+
+\begin_layout Standard
+The discussion.
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout Standard
+The summary.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+U.
+ Wolff, “Collective Monte Carlo Updating for Spin Systems”, Phys.
+ Rev.
+ Lett.
+ 62 (1989) 361.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Advanced Monte Carlo Methods notes by E. Carlon"
+target "http://itf.fys.kuleuven.be/~enrico/Teaching/monte_carlo_2018.pdf"
+literal "false"
+
+\end_inset
+
+ – Academic year 2016/2017
+\end_layout
+
+\end_body
+\end_document

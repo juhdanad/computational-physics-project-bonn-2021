@@ -1,0 +1,11 @@
+*.lyx~
+*.lyx#
+*.ipynb_checkpoints
+*.eps
+*.aux
+*.fls
+*.out
+*.synctex.gz
+*.log
+*.fdb_latexmk
+__pycache__

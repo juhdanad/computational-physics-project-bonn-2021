@@ -1,0 +1,16 @@
+[package]
+name = "final_project_native"
+version = "0.1.0"
+authors = ["Dániel Juhász <juhdanad@gmail.com>"]
+edition = "2018"
+
+[lib]
+name = "final_project_native"
+crate-type = ["cdylib"]
+
+[dependencies]
+rand = "0.7.3"
+ndarray = "0.14.0"
+cty = "0.2.1"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
