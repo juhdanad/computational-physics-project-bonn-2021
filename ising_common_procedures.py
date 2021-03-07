@@ -2,6 +2,9 @@ import numpy as np
 import ctypes as ct
 from numpy.ctypeslib import ndpointer
 
+beta_c = beta_c=np.log(1+np.sqrt(2))/2
+beta_c_3d = 0.2216544
+
 def init_grid(size):
     return np.random.choice(np.array([-1,1],dtype=np.int8),size)
 

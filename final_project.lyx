@@ -142,7 +142,103 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The introduction.
+The Ising model is a well known model of materials that exhibit phase transition
+s.
+ Based on this model, a material is a periodic grid of spins.
+ Each spin can point in two directions, we will denote them by 
+\begin_inset Formula $+1$
+\end_inset
+
+ and 
+\begin_inset Formula $-1$
+\end_inset
+
+.
+ There are two constants that describe the material: 
+\begin_inset Formula $J$
+\end_inset
+
+, which describes the coupling strength between neighboring spins, and 
+\begin_inset Formula $h$
+\end_inset
+
+, which describes external magnetic field.
+ The total Hamiltonian is:
+\begin_inset Formula 
+\[
+H=-h\sum_{i}s_{i}-J\sum_{\left\langle i,j\right\rangle }s_{i}s_{j}
+\]
+
+\end_inset
+
+where the summation with the angle brackets means summing over all neighboring
+ spin pairs.
+ 
+\begin_inset Formula $s_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $s_{j}$
+\end_inset
+
+ are the spin states, so they are 
+\begin_inset Formula $\pm1$
+\end_inset
+
+.
+ In our project we will only consider square (2D) and cubic (3D) lattices
+ in zero external field (
+\begin_inset Formula $h=0$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The 2 dimensional infinite Ising model has a critical temperature: above
+ this temperature the magnetization is zero, below that the absolute value
+ of the magnetization is nonzero.
+ Onsager derived the exact value for this case.
+ But in three dimensions we need to rely on computer simulations.
+\end_layout
+
+\begin_layout Standard
+The number of possible states grows exponentially with the system size.
+ Therefore direct calculation of the partition function is not feasible.
+ One way to circumvent this limitation is to use Monte-Carlo simulations.
+ However, at low temperatures only very few relatively ordered states will
+ give significant contributions to the partition sum, therefore the simulation
+ is inefficient.
+ With importance sampling each configuration's probability will be proportional
+ to its importance in the partition sum.
+ One such method is the Markov-chain Monte Carlo method.
+ From each state we can reach other states with specific probabilities.
+ When some conditions hold (for example ergodicity and detailed balance),
+ the states converge to the required distribution.
+ We will consider two algorithms: the Metropolis-Hastings and Wolff algorithms.
+\end_layout
+
+\begin_layout Standard
+There are two issues with such methods: on one hand, they need time to reach
+ their final distribution.
+ This is called warm-up time.
+ On the other hand, since configurations are generated from each other,
+ successive configurations are highly correlated.
+ This makes it difficult to get statistically independent data from measurements.
+\end_layout
+
+\begin_layout Standard
+The Wolff algorithm was invented specifically to overcome this critical
+ slowing down.
+ The dynamical exponent (which describes roughly how much time an algorithm
+ needs to generate independent data) is much smaller than the Metropolis
+ algorithm.
+\end_layout
+
+\begin_layout Standard
+In this project we use the Wolff algorithm to calculate the critical temperature
+ of the Ising model, and show the difference between the dynamical exponents
+ of the two algorithms.
 \end_layout
 
 \begin_layout Section
@@ -150,7 +246,191 @@ Theoretical Basis
 \end_layout
 
 \begin_layout Standard
-The theoretical basis.
+Since there is no external field in our simulations, we will use the simplified
+ Hamiltonian
+\begin_inset Formula 
+\begin{equation}
+H=-J\sum_{\left\langle i,j\right\rangle }s_{i}s_{j}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are some important quantities:
+\end_layout
+
+\begin_layout Itemize
+The grid length 
+\begin_inset Formula $L$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The number of spins 
+\begin_inset Formula $N=L^{2}\text{ or }L^{3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The magnetic moment is the sum of spins: 
+\begin_inset Formula $M=\sum_{i}s_{i}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The magnetization: 
+\begin_inset Formula $m=M/N$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The average energy per site: 
+\begin_inset Formula $\epsilon=H/N$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The temperature 
+\begin_inset Formula $T$
+\end_inset
+
+ and the critical temperature 
+\begin_inset Formula $T_{c}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\tilde{\beta}=1/\left(k_{B}T\right)$
+\end_inset
+
+ where 
+\begin_inset Formula $k_{B}$
+\end_inset
+
+ is Boltzmann's constant
+\end_layout
+
+\begin_layout Standard
+A spin configuration's probability can be calculated from its energy:
+\begin_inset Formula 
+\[
+P\left(\boldsymbol{s}\right)\sim\exp\left(-\tilde{\beta}H\left(\boldsymbol{s}\right)\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From this we also see that the probability only depends on the product of
+ 
+\begin_inset Formula $J$
+\end_inset
+
+ and 
+\begin_inset Formula $\tilde{\beta}$
+\end_inset
+
+.
+ Therefore we will set 
+\begin_inset Formula $J=1$
+\end_inset
+
+ in all our simulations, as the behavior is similar at different 
+\begin_inset Formula $J$
+\end_inset
+
+ values.
+\end_layout
+
+\begin_layout Standard
+The system can exhibit phase transitions: at a certain temperature (called
+ the critical temperature), quantities like the susceptibility diverge or
+ have an abrupt jump.
+ At low temperature, almost all spins point to the same direction, while
+ at high temperature, they point randomly.
+ Around the critical temperature large clusters appear in which spins point
+ to the same direction.
+ The critical exponents 
+\begin_inset Formula $\alpha,\beta,\gamma,\nu$
+\end_inset
+
+ are defined as 
+\begin_inset Formula 
+\begin{equation}
+T_{r}=\frac{T-T_{c}}{T_{c}}=\frac{\tilde{\beta}_{c}-\tilde{\beta}}{\tilde{\beta}}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+c\sim T_{r}^{-\alpha}\qquad m\sim\left(-T_{r}\right)^{\beta}\qquad\chi\sim T_{r}^{-\gamma}\qquad\xi\sim T_{r}^{-\nu}\label{eq:scaling}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $T_{c},c,m,\chi,\xi$
+\end_inset
+
+ are the critical temperature, specific heat, magnetization, susceptibility
+ and correlation length, respectively.
+\end_layout
+
+\begin_layout Standard
+Finally, the dynamical exponent 
+\begin_inset Formula $z$
+\end_inset
+
+ is defined as
+\begin_inset Formula 
+\[
+\tau\sim\left|T_{r}\right|^{z\nu}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A usual method to measure 
+\begin_inset Formula $z$
+\end_inset
+
+ is to assume that in a finite system the correlation length can not diverge,
+ 
+\begin_inset Formula $\xi\approx L$
+\end_inset
+
+.
+ Then,
+\begin_inset Formula 
+\begin{equation}
+\tau\sim L^{z}\label{eq:z-scaling}
+\end{equation}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -158,23 +438,726 @@ Methods
 \end_layout
 
 \begin_layout Standard
-The methods.
+The project is available at 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/juhdanad/computational-physics-project-bonn-2021"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Algorithms
+\end_layout
+
+\begin_layout Paragraph
+Metropolis-Hastings algorithm
+\end_layout
+
+\begin_layout Standard
+The algorithm examines a single spin's flip, and accepts or rejects it:
+\end_layout
+
+\begin_layout Enumerate
+Start from an initial configuration (in our report, random spins)
+\end_layout
+
+\begin_layout Enumerate
+Choose a random site
+\end_layout
+
+\begin_layout Enumerate
+Calculate the energy change 
+\begin_inset Formula $\Delta H$
+\end_inset
+
+ when we flip this spin
+\end_layout
+
+\begin_layout Enumerate
+Accept the spin flip with probability 
+\begin_inset Formula $\mathrm{min}\left(1,\exp\left(-\tilde{\beta}\cdot\Delta H\right)\right)$
+\end_inset
+
+, if rejected, stay on the previous configuration
+\end_layout
+
+\begin_layout Enumerate
+Repeat from step 2
+\end_layout
+
+\begin_layout Standard
+To reduce the correlation of measurements, we only do a measurement after
+ we have done as many accept/reject steps as the number of spins.
+\end_layout
+
+\begin_layout Paragraph
+Wolff algorithm
+\end_layout
+
+\begin_layout Standard
+Here we flip a whole cluster of spins.
+\end_layout
+
+\begin_layout Enumerate
+Start from an initial configuration (in our report, random spins)
+\end_layout
+
+\begin_layout Enumerate
+Choose a random site, flip it and add it to a stack
+\end_layout
+
+\begin_layout Enumerate
+While the stack is not empty:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Pop an element from the stack
+\end_layout
+
+\begin_layout Enumerate
+For all neighbors that point in the opposite direction, add them to the
+ stack with probability 
+\begin_inset Formula $1-\exp(-2\tilde{\beta}J)$
+\end_inset
+
+, and flip all added spins
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+The algorithm terminates after a finite time, since all spins can be added
+ to the stack only once (after that they are flipped).
+\end_layout
+
+\begin_layout Subsection
+Simulation strategies
+\end_layout
+
+\begin_layout Paragraph
+Thermalisation time
+\end_layout
+
+\begin_layout Standard
+First we need to ensure that the system has enough time for thermalisation.
+ We thought that a good indicator would be to simulate an ensemble of configurat
+ions, and plot the standard deviation of their magnetizations.
+ At the beginning we start from random spins, where the magnetization is
+ close to zero, so this standard deviation is small.
+ But then there are two equally likely directions for the spins to align,
+ so the standard deviation should increase, and converge to a value.
+\end_layout
+
+\begin_layout Paragraph
+Correctness of algorithms
+\end_layout
+
+\begin_layout Standard
+It is a good practice to check our implementation.
+ Therefore we plotted multiple values obtained by Metropolis and Wolff algorithm
+s to see if the plots coincide.
+ The comparison of the critical temperature with literature values is also
+ a good indicator, if the two values are close.
+\end_layout
+
+\begin_layout Subsection
+Error analysis
+\end_layout
+
+\begin_layout Standard
+For estimating errors we will do multiple measurements.
+ These measurements will be started from random initial configurations,
+ therefore we will not need to worry about correlation time.
+ Assuming that the measurement values follow a normal distribution, we can
+ estimate the error with 95% probability as 
+\begin_inset Formula 
+\[
+\sqrt{\frac{\mathrm{var}(x)}{N-1}}\cdot t_{N-1}
+\]
+
+\end_inset
+
+
+\begin_inset Formula $N$
+\end_inset
+
+ is the number of measurements, 
+\begin_inset Formula $\mathrm{var}(x)$
+\end_inset
+
+ is the variance of the measured values, and 
+\begin_inset Formula $t_{N-1}$
+\end_inset
+
+ is the inverse CDF of the student-t distribution at 
+\begin_inset Formula $N-1$
+\end_inset
+
+ degrees of freedom, evaluated at 0.975.
+\end_layout
+
+\begin_layout Subsection
+Fitting
+\end_layout
+
+\begin_layout Paragraph
+Critical temperature
+\end_layout
+
+\begin_layout Standard
+We use the scaling behavior of the susceptibility/cluster size in equation
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:scaling"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Therefore, we:
+\end_layout
+
+\begin_layout Enumerate
+Simulate the susceptibility's dependence on the temperature at different
+ grid sizes.
+\end_layout
+
+\begin_layout Enumerate
+Restrict attention to the part which is not significantly cut down by the
+ finite size of the grid.
+\end_layout
+
+\begin_layout Enumerate
+Simulate the largest grid on this parameter range.
+\end_layout
+
+\begin_layout Enumerate
+Since 
+\begin_inset Formula $\chi\sim T_{r}^{-\gamma}$
+\end_inset
+
+, we also have 
+\begin_inset Formula 
+\[
+\log\chi=\mathrm{const.}-\gamma\log(T_{r})=\mathrm{const.}-\gamma\log(T-T_{c})
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $T_{r}=\frac{T-T_{c}}{T_{c}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+Try different values of 
+\begin_inset Formula $T_{c}$
+\end_inset
+
+, and try to fit a line on the 
+\begin_inset Formula $\log\chi$
+\end_inset
+
+-
+\begin_inset Formula $\log(T-T_{c})$
+\end_inset
+
+ plot.
+\end_layout
+
+\begin_layout Enumerate
+The 
+\begin_inset Formula $T_{c}$
+\end_inset
+
+ where the R-value of the line is closest to 
+\begin_inset Formula $\pm1$
+\end_inset
+
+ is the critical temperature.
+\end_layout
+
+\begin_layout Enumerate
+Repeat steps 3-6 to get a bunch of 
+\begin_inset Formula $T_{c}$
+\end_inset
+
+ values for error estimation.
+\end_layout
+
+\begin_layout Paragraph
+Dynamical exponent
+\end_layout
+
+\begin_layout Standard
+We use the relation in equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:z-scaling"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Therefore, we simulate a system for some time, then calculate the normalized
+ autocorrelation function of 
+\begin_inset Formula $m$
+\end_inset
+
+ and 
+\begin_inset Formula $H$
+\end_inset
+
+.
+ Then we fit a line on the log-plot of this autocorrelation function, and
+ get the autocorrelation time.
+ In the case of the Wolff algorithm we scale the time by 
+\begin_inset Formula $\left\langle C\right\rangle /N$
+\end_inset
+
+, where 
+\begin_inset Formula $\left\langle C\right\rangle $
+\end_inset
+
+ is the average cluster size.
+ Finally, we fit a line on the log-log plot of the 
+\begin_inset Formula $\tau-N$
+\end_inset
+
+ plot, and from the slope we get 
+\begin_inset Formula $z$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
 Results
 \end_layout
 
+\begin_layout Subsection
+Thermalisation time
+\end_layout
+
 \begin_layout Standard
-Th results.
+The results are in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:sufficient-warm-up-steps"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Generally we got that the Wolff algorithm converges the slowest when there
+ is a large grid and small 
+\begin_inset Formula $\tilde{\beta}$
+\end_inset
+
+.
+ This can be explained with the fact that at small 
+\begin_inset Formula $\tilde{\beta}$
+\end_inset
+
+ values the clusters are small, so more clusters are needed to move away
+ from the initial configuration.
+ The Metropolis algorithm is the slowest around the critical temperature.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+algorithm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+square grid
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cubic grid
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Metropolis
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+10000
+\series default
+ (
+\begin_inset Formula $L\le120$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+500
+\series default
+ (
+\begin_inset Formula $L\le20$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Wolff
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+6000
+\series default
+ (
+\begin_inset Formula $L\le140,\tilde{\beta}\ge0.3$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+3000
+\series default
+ (
+\begin_inset Formula $L\le25,\tilde{\beta}\ge0.2$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:sufficient-warm-up-steps"
+
+\end_inset
+
+sufficient warm-up steps for different scenarios
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Critical temperature
+\end_layout
+
+\begin_layout Standard
+For the 2D Ising model we got 
+\begin_inset Formula $\tilde{\beta}_{c}=0.4415(54)$
+\end_inset
+
+.
+ For the 3D Ising model we got 
+\begin_inset Formula $\tilde{\beta}_{c}=0.221(74)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Dynamical exponent
+\end_layout
+
+\begin_layout Standard
+The different dynamical exponents are in table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:dynamical"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+algorithm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+calculated from 
+\begin_inset Formula $m$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+calculated from 
+\begin_inset Formula $H$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Metropolis
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.5(72) 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.5(49)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Wolff
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-0.77(1)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.33(8)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:dynamical"
+
+\end_inset
+
+dynamical exponents
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Discussion
 \end_layout
 
+\begin_layout Subsection
+Critical temperature
+\end_layout
+
 \begin_layout Standard
-The discussion.
+The measured values are close to the literature values: the relative errors
+ are 0.2% for the 2D case and 0.04% for the 3D case.
+ However, in the 2D case the exact value is outside of the error bounds,
+ that is, we have systematic errors.
+ One likely explanation is that we used a large 
+\begin_inset Formula $\tilde{\beta}$
+\end_inset
+
+ range for fitting the exponential curve, but the scaling relations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "tab:dynamical"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ only hold very close to the critical temperature.
+\end_layout
+
+\begin_layout Subsection
+Dynamical exponent
+\end_layout
+
+\begin_layout Standard
+We can see from the results that the dynamical exponent is smaller for the
+ Wolff algorithm.
+ However, only one value is similar to the literature value: for the Wolff
+ algorithm, we got 0.33(8) and the literature value is 0.25.
 \end_layout
 
 \begin_layout Section
@@ -182,7 +1165,10 @@ Summary
 \end_layout
 
 \begin_layout Standard
-The summary.
+We demonstrated that near the critical temperature the Wolff algorithm scales
+ better than the Metropolis algorithm.
+ However, our result is not close to the literature value.
+ 
 \end_layout
 
 \begin_layout Bibliography
@@ -216,6 +1202,58 @@ literal "false"
 \end_inset
 
  – Academic year 2016/2017
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+P.
+ J.
+ Meyer, 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Computational Studies of Pure and Dilute Spin Models"
+target "https://hermetic.ch/compsci/thesis/chap3.htm"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+, thesis, chapter 3
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+M.
+ Dílaver, S.
+ Gündüç, M.
+ Aydın, Y.
+ Gündüç, 
+\begin_inset Quotes eld
+\end_inset
+
+A New Measurement of Dynamic Critical exponent of Wolff Algorithm by Dynamic
+ Finite Size Scaling
+\begin_inset Quotes erd
+\end_inset
+
+, arXiv:cond-mat/0409696
 \end_layout
 
 \end_body
